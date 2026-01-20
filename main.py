@@ -26,5 +26,3 @@ class MatchInput(BaseModel):
 @app.post("/predict")
 def get_prediction(data: MatchInput):
     return predict(data.dict())
-# already correct
-app = FastAPI()
