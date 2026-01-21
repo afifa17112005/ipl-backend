@@ -3,11 +3,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from model import predict
 
-app = FastAPI()
+app = FastAPI(
+    title="IPL Win Predictor API",
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json"
+)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -23,11 +29,9 @@ class MatchInput(BaseModel):
     cur_run_rate: float
     req_run_rate: float
 
-
 @app.get("/")
-def root():
-    return {"status": "IPL backend running"}
-
+def health():
+    return {"status": "Backend is running"}
 
 @app.post("/predict")
 def get_prediction(data: MatchInput):
