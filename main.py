@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 from model import predict
 
 app = FastAPI()
@@ -23,6 +23,14 @@ class MatchInput(BaseModel):
     cur_run_rate: float
     req_run_rate: float
 
+
+@app.get("/")
+def root():
+    return {"status": "IPL backend running"}
+
+
 @app.post("/predict")
 def get_prediction(data: MatchInput):
-    return predict(data.dict())
+    return {
+        "win_probability": predict(data.dict())
+    }
